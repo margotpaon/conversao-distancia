@@ -19,6 +19,10 @@ def index():
         selecao = request.form.get('selectTemp')
         valor = request.form.get('valorRef')
 
+        # Verificação se os campos foram preenchidos
+        if not selecao or not valor:
+            return render_template('index.html', conteudo={'unidade': 'inválido', 'valor': 'Entrada inválida'}, hostname=hostname, ip_address=ip_address)
+
         try:
             valor = float(valor)
         except ValueError:
@@ -50,7 +54,7 @@ def index():
         return render_template('index.html', conteudo={'unidade': unidade, 'valor': resultado}, hostname=hostname, ip_address=ip_address)
 
 if __name__ == '__main__':
-    app.run()
+     app.run(host="0.0.0.0", port=5000)
 else:
     gunicorn_logger = logging.getLogger('gunicorn.error')
     app.logger.handlers = gunicorn_logger.handlers
